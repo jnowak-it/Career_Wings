@@ -20,33 +20,37 @@ def is_year_correct():
     current_year = datetime.now().year
     while True:
         year_born = input("Enter year born: ")
-        if not(year_born.isdigit() and 1000 <= int(year_born) <= current_year):
+        if not(year_born.isdigit() and 1900 <= int(year_born) <= current_year):
             print("Please enter a valid year.")
         else:
             break
     return int(year_born)
 
-
-def what_gender():
-    gender = input("Enter your gender: M for male, F for female: ").upper()
+def is_gender_correct():
+    while True:
+        gender = input("Enter your gender: M for male, F for female: ").upper()
+        if gender not in ["M", "F"]:
+            print("Please enter a valid gender.")
+        else:
+            break
     return gender
 
-def is_age_correct():
+def retirement_check():
+    name = is_name_correct()
+    year_born = is_year_correct()
+    gender = is_gender_correct()
     current_year = datetime.now().year
-    age = current_year - is_year_correct()
+    age = current_year - year_born
     retirement_age_women = 60
     retirement_age_men = 65
-    if (age >= retirement_age_men and what_gender() == "M") or (age >= retirement_age_women and what_gender() == "F"):
-        return True
+    if (age >= retirement_age_men and gender == "M") or (age >= retirement_age_women and gender == "F"):
+        print(f"{name}, you can retire.")
     else:
-        return False
+        if gender == "M":
+            years_left = retirement_age_men - age
+        else:
+            years_left = retirement_age_women - age
+        print(f"{name}, you cannot retire. You can retire in {years_left} years.")
 
-def can_retire():
-    is_name_correct()
-    is_year_correct()
-    what_gender()
-    is_age_correct()
-
-can_retire()
-
+retirement_check()
 
