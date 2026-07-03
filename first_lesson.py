@@ -17,17 +17,15 @@ def is_name_correct():
     return name
 
 def is_year_correct():
-    year_born = input("Enter year born: ")
     current_year = datetime.now().year
-    if year_born.isdigit():
-        if 1000 <= int(year_born) <= current_year:
-            return year_born
-        else:
+    while True:
+        year_born = input("Enter year born: ")
+        if not(year_born.isdigit() and 1000 <= int(year_born) <= current_year):
             print("Please enter a valid year.")
-            return False
-    else:
-        print("Please enter a valid year.")
-        return None
+        else:
+            break
+    return int(year_born)
+
 
 def what_gender():
     gender = input("Enter your gender: M for male, F for female: ").upper()
