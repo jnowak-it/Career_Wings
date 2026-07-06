@@ -7,7 +7,7 @@
 
 from datetime import datetime
 
-def is_name_correct():
+def get_valid_name():
     while True:
         name = input("Enter your name: ").strip()
         if len(name) == 0 or not name.isalpha():
@@ -16,7 +16,7 @@ def is_name_correct():
             break
     return name
 
-def is_year_correct():
+def get_valid_year():
     current_year = datetime.now().year
     while True:
         year_born = input("Enter year born: ")
@@ -26,7 +26,7 @@ def is_year_correct():
             break
     return int(year_born)
 
-def is_gender_correct():
+def get_valid_gender():
     while True:
         gender = input("Enter your gender: M for male, F for female: ").upper()
         if gender not in ["M", "F"]:
@@ -36,9 +36,9 @@ def is_gender_correct():
     return gender
 
 def retirement_check():
-    name = is_name_correct()
-    year_born = is_year_correct()
-    gender = is_gender_correct()
+    name = get_valid_name()
+    year_born = get_valid_year()
+    gender = get_valid_gender()
     current_year = datetime.now().year
     age = current_year - year_born
     retirement_age_women = 60
