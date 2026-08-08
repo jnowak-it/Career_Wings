@@ -49,7 +49,7 @@ def delete_note(notes):
         print(Fore.RED + "Please enter a valid number.")
 
 def main():
-    notes = {}
+    notes = json.load(open("notes.json"))
     print(Fore.MAGENTA + "\nWelcome to the notes app")
 
     while True:
