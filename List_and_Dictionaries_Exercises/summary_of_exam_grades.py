@@ -1,8 +1,8 @@
-#🇵🇱 Uczniowie klasy 1A pisali egzamin z angielskiego. Wyniki są w słowniku exam_points. Przygotuj listę uczniów, którzy
+# 🇵🇱 Uczniowie klasy 1A pisali egzamin z angielskiego. Wyniki są w słowniku exam_points. Przygotuj listę uczniów, którzy
 # nie zdali (failed_students), listę tych z oceną bardzo dobrą (top_students) oraz krotkę z najlepszym uczniem
 # i jego wynikiem (best_student).
 
-#🇬🇧 The students in Class 1A took an English exam. The results are stored in the `exam_points` dictionary. Prepare a list
+# 🇬🇧 The students in Class 1A took an English exam. The results are stored in the `exam_points` dictionary. Prepare a list
 # of students who failed (`failed_students`), a list of those with a “very good” grade (`top_students`), and
 # a tuple containing the top student and their score (`best_student`).
 
