@@ -2,7 +2,6 @@
 #Wszystko zapisuje się do pliku JSON, więc dane nie giną po zamknięciu programu.
 #🇬🇧 Build a notepad that runs in the terminal. You can add notes, view a list of them and delete selected ones.
 #Everything is saved to JSON file, so your data won't be lost when you close the program.
-import itertools
 import json
 from colorama import Fore, Style, init
 init(autoreset=True)
@@ -41,15 +40,22 @@ def delete_note(notes):
     try:
         index = int(input("Enter task number to delete: ")) - 1
         if 0 <= index < len(notes):
-            del notes[next(itertools.islice(notes, index, None))]
+            del notes[list(notes.keys())[index]]
             print(Fore.GREEN + "Note deleted.")
         else:
             print(Fore.RED + "Invalid task number. Try again.")
     except ValueError:
         print(Fore.RED + "Please enter a valid number.")
 
+def load_notes():
+    try:
+        with open("notes.json", "r") as json_file:
+            return json.load(json_file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
 def main():
-    notes = json.load(open("notes.json"))
+    notes = load_notes()
     print(Fore.MAGENTA + "\nWelcome to the notes app")
 
     while True:
