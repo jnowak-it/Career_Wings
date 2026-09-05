@@ -53,4 +53,3 @@ def retirement_check():
         print(f"{name}, you cannot retire. You can retire in {years_left} years.")
 
 retirement_check()
-
