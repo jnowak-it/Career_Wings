@@ -47,3 +47,32 @@ button:hover {
     border-radius: 8px;
     min-height: 40px;
 }
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.tab-button {
+    padding: 10px 20px
+    font-size: 15px
+    background-color: #f0f0f5
+    color: #104FAD
+    border: none
+    border-radius: 8px
+    cursor: pointer;
+}
+
+.tab-button.active {
+    background-color: #1098AD;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}

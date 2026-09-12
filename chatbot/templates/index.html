@@ -8,19 +8,53 @@
 </head>
 <body>
     <main class="container">
+        <nav class="tabs">
+            <button class="tab-button {{ 'active' if aktywna_zakladka == 'pytanie' else '' }}" data-tab="pytanie">Zadaj pytanie</button>
+            <button class="tab-button {{ 'active' if aktywna_zakladka == 'analiza' else '' }}" data-tab="analiza">Analizuj dane</button>
+        </nav>
         <h1>Zapytaj AI</h1>
-        <form action="/zapytaj" method="POST">
-            <textarea
-                name="pytanie"
-                id="pytanie"
-                rows="4"
-                placeholder="Wpisz swoje pytanie...">
-            </textarea>
-            <button type="submit">Wyślij</button>
-        </form>
-        <div class="answer-box">
-            <p>{{ odpowiedz }}</p>
+
+        <div class="tab-content {{ 'active' if aktywna_zakladka == 'pytanie' else '' }}" id="pytanie">
+            <form action="/zapytaj" method="POST">
+                <textarea
+                    name="pytanie"
+                    id="pytanie-input"
+                    rows="4"
+                    placeholder="Wpisz swoje pytanie...">
+                </textarea>
+                <button type="submit">Wyślij</button>
+            </form>
+            <div class="answer-box">
+                <p>{{ odpowiedz }}</p>
+            </div>
+        </div>
+
+        <div class="tab-content {{ 'active' if aktywna_zakladka == 'analiza' else '' }}" id="analiza">
+            <form action="/analizuj" method="POST" enctype="multipart/form-data">
+                <input type="file" name="plik_csv" id="plik_csv" accept=".csv">
+                <button type="submit">Analizuj</button>
+            </form>
+            <div class="answer-box">
+                <p>{{ podsumowanie }}</p>
+            </div>
         </div>
     </main>
+
+    <script>
+        const buttons = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.tab-content');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                buttons.forEach(btn => btn.classList.remove('active'));
+                contents.forEach(content => content.classList.remove('active'));
+
+                button.classList.add('active');
+                const targetId = button.getAttribute('data-tab');
+                document.getElementById(targetId).classList.add('active');
+        });
+    });
+    </script>
+
 </body>
 </html>

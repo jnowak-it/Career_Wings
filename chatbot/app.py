@@ -4,12 +4,13 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-client = Anthropic(api_key=os.getenv("ANTROPHIC_API_KEY"))
+client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 app = Flask(__name__)
 @app.route("/")
 def strona_glowna():
-    return render_template("index.html")
+    return render_template("index.html", aktywna_zakladka="pytanie")
+
 @app.route("/zapytaj", methods=["POST"])
 def zapytaj():
     pytanie = request.form.get("pytanie")
@@ -21,6 +22,14 @@ def zapytaj():
     )
     odpowiedz = response.content[0].text
 
-    return render_template("index.html", odpowiedz=odpowiedz)
+    return render_template("index.html", odpowiedz=odpowiedz, aktywna_zakladka="pytanie")
+
+@app.route("/analizuj", methods=["POST"])
+def analizuj():
+    plik = request.files.get("plik_csv")
+
+    if plik is None or plik.filename == "":
+        return render_template("index.html", podsumowanie="Nie wybrano pliku", aktywna_zakladka="analiza")
+    return render_template("index.html", podsumowanie=f"Otrzymano plik: {plik.filename}", aktywna_zakladka="analiza")
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
