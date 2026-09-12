@@ -13,7 +13,14 @@ def strona_glowna():
 @app.route("/zapytaj", methods=["POST"])
 def zapytaj():
     pytanie = request.form.get("pytanie")
-    odpowiedz = f"To jest przykladowa odpowiedz na pytanie: {pytanie}"
+
+    response = client.messages.create(
+        model="claude-sonnet-4-5",
+        max_tokens=1024,
+        messages=[{"role": "user", "content": pytanie}]
+    )
+    odpowiedz = response.content[0].text
+
     return render_template("index.html", odpowiedz=odpowiedz)
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
