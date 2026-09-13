@@ -33,8 +33,25 @@ def analizuj():
         return render_template("index.html", podsumowanie="Nie wybrano pliku", aktywna_zakladka="analiza")
 
     df = pd.read_csv(plik)
-    podglad = df.head().to_string()
+    dane_tekstowe = df.to_string()
 
-    return render_template("index.html", podsumowanie=f"Wczytano plik. Podgląd danych:\n{podglad}", aktywna_zakladka="analiza")
+    prompt = f"""Przeanalizuj poniższe dane z pliku CSV i napisz krótkie podsumowanie
+    po polsku: jakie są główne wnioski, czy są jakieś nietypowe wartości, jakie
+    wzorce widać w danych.
+    
+    Dane:
+    {dane_tekstowe}"""
+
+    try:
+        response = client.messages.create(
+            model="claude-sonnet-4-5",
+            max_tokens=1024,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        podsumowanie = response.content[0].text
+    except Exception as e:
+        podsumowanie = f"Nie udało się wygenerować podsumowania: {e}"
+
+    return render_template("index.html", podsumowanie=podsumowanie, aktywna_zakladka="analiza")
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
