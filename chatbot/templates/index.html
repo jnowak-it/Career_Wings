@@ -1,57 +1,57 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mój Chatbot AI</title>
+    <title>My AI Chatbot</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <main class="container">
         <nav class="tabs">
-            <button class="tab-button {{ 'active' if aktywna_zakladka == 'pytanie' else '' }}" data-tab="pytanie">Zadaj pytanie</button>
-            <button class="tab-button {{ 'active' if aktywna_zakladka == 'analiza' else '' }}" data-tab="analiza">Analizuj dane</button>
-            <button class="tab-button {{ 'active' if aktywna_zakladka == 'streszczenie' else '' }}" data-tab="streszczenie">Streszcz tekst</button>
+            <button class="tab-button {{ 'active' if active_tab == 'question' else '' }}" data-tab="question">Ask a question</button>
+            <button class="tab-button {{ 'active' if active_tab == 'analyze' else '' }}" data-tab="analyze">Analyze data</button>
+            <button class="tab-button {{ 'active' if active_tab == 'summarize' else '' }}" data-tab="summarize">Summarize text</button>
         </nav>
-        <h1>Zapytaj AI</h1>
+        <h1>Ask AI</h1>
 
-        <div class="tab-content {{ 'active' if aktywna_zakladka == 'pytanie' else '' }}" id="pytanie">
-            <form action="/zapytaj" method="POST">
+        <div class="tab-content {{ 'active' if active_tab == 'question' else '' }}" id="question">
+            <form action="/ask" method="POST">
                 <textarea
-                    name="pytanie"
-                    id="pytanie-input"
+                    name="question"
+                    id="question-input"
                     rows="4"
-                    placeholder="Wpisz swoje pytanie...">
-                </textarea>
-                <button type="submit">Wyślij</button>
+                    placeholder="Enter your question..."
+                ></textarea>
+                <button type="submit">Send</button>
             </form>
             <div class="answer-box">
-                <p>{{ odpowiedz }}</p>
+                <p>{{ answer }}</p>
             </div>
         </div>
 
-        <div class="tab-content {{ 'active' if aktywna_zakladka == 'analiza' else '' }}" id="analiza">
-            <form action="/analizuj" method="POST" enctype="multipart/form-data">
-                <input type="file" name="plik_csv" id="plik_csv" accept=".csv">
-                <button type="submit">Analizuj</button>
+        <div class="tab-content {{ 'active' if active_tab == 'analyze' else '' }}" id="analyze">
+            <form action="/analyze" method="POST" enctype="multipart/form-data">
+                <input type="file" name="csv_file" id="csv-file-input" accept=".csv">
+                <button type="submit">Analyze</button>
             </form>
             <div class="answer-box">
-                <p>{{ podsumowanie }}</p>
+                <p>{{ csv_summary }}</p>
             </div>
         </div>
 
-        <div class="tab-content {{ 'active' if aktywna_zakladka == 'streszczenie' else '' }}" id="streszczenie">
-    <form action="/streszcz" method="POST">
+        <div class="tab-content {{ 'active' if active_tab == 'summarize' else '' }}" id="summarize">
+    <form action="/summarize" method="POST">
         <textarea
-            name="tekst_do_streszczenia"
-            id="tekst-input"
+            name="text_to_summarize"
+            id="text-input"
             rows="8"
-            placeholder="Wklej tekst do streszczenia..."
+            placeholder="Paste text here..."
         ></textarea>
-        <button type="submit">Streszcz</button>
+        <button type="submit">Summarize</button>
     </form>
     <div class="answer-box">
-        <p>{{ streszczenie }}</p>
+        <p>{{ text_summary }}</p>
     </div>
 </div>
     </main>
