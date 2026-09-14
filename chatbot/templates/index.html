@@ -14,6 +14,11 @@
             <button class="tab-button {{ 'active' if active_tab == 'summarize' else '' }}" data-tab="summarize">Summarize text</button>
         </nav>
         <h1>Ask AI</h1>
+        {% if current_user.is_authenticated %}
+            <p>Logged in as {{ current_user.username }} | <a href="/logout">Log out</a></p>
+        {% else %}
+            <p>Not logged in | <a href="/login">Log in</a> | <a href="/register">Register</a></p>
+        {% endif %}
 
         <div class="tab-content {{ 'active' if active_tab == 'question' else '' }}" id="question">
             <form action="/ask" method="POST">
