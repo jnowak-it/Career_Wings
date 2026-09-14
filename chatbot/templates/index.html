@@ -11,6 +11,7 @@
         <nav class="tabs">
             <button class="tab-button {{ 'active' if aktywna_zakladka == 'pytanie' else '' }}" data-tab="pytanie">Zadaj pytanie</button>
             <button class="tab-button {{ 'active' if aktywna_zakladka == 'analiza' else '' }}" data-tab="analiza">Analizuj dane</button>
+            <button class="tab-button {{ 'active' if aktywna_zakladka == 'streszczenie' else '' }}" data-tab="streszczenie">Streszcz tekst</button>
         </nav>
         <h1>Zapytaj AI</h1>
 
@@ -38,6 +39,21 @@
                 <p>{{ podsumowanie }}</p>
             </div>
         </div>
+
+        <div class="tab-content {{ 'active' if aktywna_zakladka == 'streszczenie' else '' }}" id="streszczenie">
+    <form action="/streszcz" method="POST">
+        <textarea
+            name="tekst_do_streszczenia"
+            id="tekst-input"
+            rows="8"
+            placeholder="Wklej tekst do streszczenia..."
+        ></textarea>
+        <button type="submit">Streszcz</button>
+    </form>
+    <div class="answer-box">
+        <p>{{ streszczenie }}</p>
+    </div>
+</div>
     </main>
 
     <script>

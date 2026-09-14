@@ -83,5 +83,38 @@ def analizuj():
         podsumowanie = f"Nie udało się wygenerować podsumowania: {e}"
 
     return render_template("index.html", podsumowanie=podsumowanie, aktywna_zakladka="analiza")
+
+@app.route("/streszcz", methods=["POST"])
+@limiter.limit("8 per hour")
+def streszcz():
+    tekst = request.form.get("tekst_do_streszczenia")
+
+    if tekst is None or tekst.strip() == "":
+        return render_template("index.html", streszczenie="Please paste some text to summarize.", aktywna_zakladka="streszczenie")
+
+    if len(tekst) < 50:
+        return render_template("index.html", streszczenie="Text is too short to summarize (min 50 characters).", aktywna_zakladka="streszczenie")
+
+    if len(tekst) > 5000:
+        return render_template("index.html", streszczenie="Text is too long (max 5000 characters).", aktywna_zakladka="streszczenie")
+
+    prompt = f"""Summarize the following text in Polish, in 2-3 concise sentences,
+capturing only the most important points.
+
+Text:
+{tekst}"""
+
+    try:
+        response = client.messages.create(
+            model="claude-sonnet-4-5",
+            max_tokens=512,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        streszczenie = response.content[0].text
+    except Exception as e:
+        streszczenie = f"Failed to generate summary: {e}"
+
+    return render_template("index.html", streszczenie=streszczenie, aktywna_zakladka="streszczenie")
+
 if __name__ == "__main__":
     app.run(debug=True, port=5001)
