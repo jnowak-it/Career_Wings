@@ -99,6 +99,8 @@ class Flashcard(db.Model):
     answer = db.Column(db.Text, nullable=False)
     set_id = db.Column(db.Integer, db.ForeignKey("flashcard_set.id"), nullable=False)
 
+with app.app_context():
+    db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):
