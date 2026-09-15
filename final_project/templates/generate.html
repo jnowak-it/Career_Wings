@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Flashcard Set</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <main class="container">
+        <div class="topbar">
+            <a href="/">&larr; Dashboard</a>
+            <span><a href="/logout">Log out</a></span>
+        </div>
+
+        <h1>Generate flashcards from text</h1>
+        <p>Paste your notes or study material below (100–8000 characters) and AI will turn them into flashcards.</p>
+
+        {% if error %}
+            <div class="error-box"><p>{{ error }}</p></div>
+        {% endif %}
+
+        <form action="/generate" method="POST">
+            <input type="text" name="title" placeholder="Set title (e.g. 'Biology Chapter 3')" maxlength="120" required>
+            <textarea name="study_text" rows="12" placeholder="Paste your study text here..." required></textarea>
+            <button type="submit">Generate flashcards</button>
+        </form>
+    </main>
+</body>
+</html>

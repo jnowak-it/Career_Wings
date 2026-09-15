@@ -1,0 +1,7 @@
+Flask
+anthropic
+python-dotenv
+Flask-SQLAlchemy
+Flask-Login
+Flask-Limiter
+gunicorn

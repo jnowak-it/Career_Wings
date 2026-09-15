@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ card_set.title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <main class="container">
+        <div class="topbar">
+            <a href="/">&larr; Dashboard</a>
+            <span><a href="/logout">Log out</a></span>
+        </div>
+
+        <h1>{{ card_set.title }}</h1>
+
+        {% if card_set.cards %}
+            <div class="progress" id="progress">Card 1 of {{ card_set.cards|length }}</div>
+
+            <div class="card" id="flashcard">
+                <div class="label" id="card-label">Question (click to flip)</div>
+                <div id="card-text"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button type="button" id="prev-btn">&larr; Previous</button>
+                <button type="button" id="next-btn">Next &rarr;</button>
+            </div>
+
+            <form action="/set/{{ card_set.id }}/delete" method="POST" style="margin-top: 24px;">
+                <button type="submit" class="btn-secondary">Delete this set</button>
+            </form>
+
+            <script>
+                const cards = [
+                    {% for card in card_set.cards %}
+                    { question: {{ card.question|tojson }}, answer: {{ card.answer|tojson }} },
+                    {% endfor %}
+                ];
+
+                let currentIndex = 0;
+                let showingAnswer = false;
+
+                const cardText = document.getElementById('card-text');
+                const cardLabel = document.getElementById('card-label');
+                const progress = document.getElementById('progress');
+                const flashcard = document.getElementById('flashcard');
+
+                function renderCard() {
+                    const card = cards[currentIndex];
+                    cardText.textContent = showingAnswer ? card.answer : card.question;
+                    cardLabel.textContent = showingAnswer ? 'Answer' : 'Question (click to flip)';
+                    progress.textContent = `Card ${currentIndex + 1} of ${cards.length}`;
+                }
+
+                flashcard.addEventListener('click', () => {
+                    showingAnswer = !showingAnswer;
+                    renderCard();
+                });
+
+                document.getElementById('next-btn').addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % cards.length;
+                    showingAnswer = false;
+                    renderCard();
+                });
+
+                document.getElementById('prev-btn').addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+                    showingAnswer = false;
+                    renderCard();
+                });
+
+                renderCard();
+            </script>
+        {% else %}
+            <p>This set has no cards.</p>
+        {% endif %}
+    </main>
+</body>
+</html>

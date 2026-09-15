@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Flashcard Sets</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <main class="container">
+        <div class="topbar">
+            <span>Logged in as <strong>{{ current_user.username }}</strong></span>
+            <span><a href="/logout">Log out</a></span>
+        </div>
+
+        <h1>My Flashcard Sets</h1>
+
+        {% if sets %}
+            <ul class="set-list">
+                {% for card_set in sets %}
+                    <li>
+                        <a href="/set/{{ card_set.id }}">{{ card_set.title }}</a>
+                        <span>{{ card_set.cards|length }} cards</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You don't have any flashcard sets yet.</p>
+        {% endif %}
+
+        <a class="btn" href="/generate">+ New set from text</a>
+    </main>
+</body>
+</html>
