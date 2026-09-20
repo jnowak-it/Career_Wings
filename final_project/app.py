@@ -260,6 +260,62 @@ Study material:
 
     return render_template("generate.html")
 
+MAX_CSV_SIZE = 5 * 1024 * 1024  # 5 MB
+
+@app.route("/analyze-csv", methods=["GET", "POST"])
+@login_required
+@limiter.limit("10 per hour")
+def analyze_csv():
+    if request.method == "POST":
+        file = request.files.get("csv_file")
+
+        if file is None or file.filename == "":
+            return render_template("analyze_csv.html", error="No file selected.")
+
+        file.seek(0, os.SEEK_END)
+        file_size = file.tell()
+        file.seek(0)
+
+        if file_size > MAX_CSV_SIZE:
+            return render_template("analyze_csv.html", error="File is too large (max 5 MB).")
+
+        try:
+            df = pd.read_csv(file)
+        except Exception:
+            return render_template("analyze_csv.html", error="Could not read this file as a CSV.")
+
+        stats = {
+            "rows": df.shape[0],
+            "columns": df.shape[1],
+            "column_names": list(df.columns),
+            "describe": df.describe().to_html(classes="stats-table")
+        }
+
+        data_text = df.to_string()
+        prompt = f"""Analyze the CSV data below and write a short summary in Polish:
+main takeaways, unusual values, and patterns in the data.
+
+Data:
+{data_text}"""
+
+        try:
+            response = client.messages.create(
+                model="claude-sonnet-4-5",
+                max_tokens=1024,
+                system=SYSTEM_PROMPT,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            ai_summary = response.content[0].text
+
+            if not is_text_safe(ai_summary):
+                ai_summary = "The response was blocked because it looked suspicious."
+
+        except Exception as e:
+            ai_summary = f"Failed to generate AI summary: {e}"
+
+        return render_template("analyze_csv.html", stats=stats, ai_summary=ai_summary)
+
+    return render_template("analyze_csv.html")
 
 @app.route("/set/<int:set_id>")
 @login_required
