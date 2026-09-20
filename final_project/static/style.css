@@ -299,3 +299,8 @@ button:hover, .btn:hover {
 .stats-table tr:last-child td {
     border-bottom: none;
 }
+
+.hero-illustration {
+    text-align: center;
+    margin-bottom: 8px;
+}
